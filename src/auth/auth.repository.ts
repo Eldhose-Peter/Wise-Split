@@ -55,6 +55,7 @@ export class AuthRepository {
         lastName: true,
         bio: true,
         imageUrl: true,
+        password: true,
       },
     });
     if (!result) return null;

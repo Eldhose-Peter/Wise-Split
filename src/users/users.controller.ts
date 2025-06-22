@@ -29,7 +29,7 @@ class UsersController extends Controller {
           imageUrl: true,
         },
       });
-      response.json({ users: result.rows });
+      response.json({ users: result });
     } catch (err) {
       next(err);
     }

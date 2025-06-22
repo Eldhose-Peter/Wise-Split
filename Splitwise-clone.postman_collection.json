@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "52b8a981-015f-4c9b-85b9-dd9f1bd82d42",
-		"name": "NodeJS Starter",
+		"_postman_id": "63755218-2f5f-410a-a257-127ed93cdf2a",
+		"name": "Splitwise-clone",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "19966914"
 	},
@@ -21,12 +21,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:3000/api/v1/users",
-							"protocol": "http",
+							"raw": "{{host}}/api/v1/users",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3000",
 							"path": [
 								"api",
 								"v1",
@@ -48,7 +46,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\":\"test\",\n    \"email\": \"test@gmail.com\",\n    \"password\": \"qwerty\"\n}",
+							"raw": "{\n    \"userName\": \"test\",\n    \"email\": \"test@gmail.com\",\n    \"password\": \"qwerty\",\n    \"firstName\": \"Test\",\n    \"lastName\": \"User\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -56,12 +54,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/auth/register",
-							"protocol": "http",
+							"raw": "{{host}}/api/v1/auth/register",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3000",
 							"path": [
 								"api",
 								"v1",
@@ -169,12 +165,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/auth/login",
-							"protocol": "http",
+							"raw": "{{host}}/api/v1/auth/login",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3000",
 							"path": [
 								"api",
 								"v1",
@@ -282,12 +276,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/auth/logout",
-							"protocol": "http",
+							"raw": "{{host}}/api/v1/auth/logout",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3000",
 							"path": [
 								"api",
 								"v1",
@@ -374,12 +366,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/v1/auth/me",
-							"protocol": "http",
+							"raw": "{{host}}/api/v1/auth/me",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3000",
 							"path": [
 								"api",
 								"v1",
@@ -460,6 +450,35 @@
 					]
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:3001",
+			"type": "string"
 		}
 	]
 }

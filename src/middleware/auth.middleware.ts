@@ -19,7 +19,7 @@ async function authMiddleware(
     where: { id: decoded._id },
   });
 
-  if (result.rows.length === 0) return next(new UnauthorizedError());
+  if (result.length === 0) return next(new UnauthorizedError());
 
   request.userId = decoded._id;
 
