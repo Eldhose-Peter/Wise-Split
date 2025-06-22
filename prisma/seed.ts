@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -7,6 +8,8 @@ async function main() {
   const alice = await prisma.user.create({
     data: {
       email: "alice@example.com",
+      userName: "alice123",
+      password: bcrypt.hashSync("password123", 10),
       firstName: "Alice",
       lastName: "Anderson",
       bio: "Loves to travel",
@@ -17,6 +20,8 @@ async function main() {
   const bob = await prisma.user.create({
     data: {
       email: "bob@example.com",
+      userName: "bob_the_builder",
+      password: bcrypt.hashSync("password123", 10),
       firstName: "Bob",
       lastName: "Brown",
       bio: "Enjoys hiking",
@@ -27,6 +32,8 @@ async function main() {
   const charlie = await prisma.user.create({
     data: {
       email: "charlie@example.com",
+      userName: "charlie_chill",
+      password: bcrypt.hashSync("password123", 10),
       firstName: "Charlie",
       lastName: "Clark",
       bio: "Foodie",
@@ -50,6 +57,7 @@ async function main() {
   });
 
   // Create Expenses
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const expense1 = await prisma.expense.create({
     data: {
       groupId: group.id,
@@ -67,6 +75,7 @@ async function main() {
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const expense2 = await prisma.expense.create({
     data: {
       groupId: group.id,
