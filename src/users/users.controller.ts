@@ -1,15 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import { Controller } from "interfaces/controller.interface";
-import prisma from "lib/prisma";
+import { UserService } from "./users.service";
+import authMiddleware from "middleware/auth.middleware";
 
 class UsersController extends Controller {
+  private userService = new UserService();
   constructor() {
     super("/users");
     this.initializeRoutes();
   }
 
   protected initializeRoutes() {
-    this.router.get(this.path, this.getUsers);
+    this.router.get(this.path, authMiddleware, this.getUsers);
   }
 
   private getUsers = async (
@@ -18,17 +20,7 @@ class UsersController extends Controller {
     next: NextFunction
   ) => {
     try {
-      // const result = await pool.query("SELECT id, username, email FROM users");
-      const result = await prisma.user.findMany({
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          bio: true,
-          imageUrl: true,
-        },
-      });
+      const result = await this.userService.getAllUsers();
       response.json({ users: result });
     } catch (err) {
       next(err);
