@@ -42,7 +42,7 @@ export class GroupController extends Controller {
         userId
       );
 
-      response.json(paymentGraph.toSerializable());
+      response.json(paymentGraph.toArray());
     } catch (error) {
       next(error);
     }
@@ -57,7 +57,7 @@ export class GroupController extends Controller {
       const groupId = Number(request.params.groupid);
       const userId = Number(request.params.userid);
       const balances = await this.groupService.getBalances(groupId, userId);
-      response.json(balances.toSerializable());
+      response.json(balances.toArray());
     } catch (error) {
       next(error);
     }

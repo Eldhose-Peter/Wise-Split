@@ -11,17 +11,26 @@ export class PaymentGraph {
     return this.graph;
   }
 
-  public toSerializable(): string {
-    const result: string[] = [];
+  public toArray(): {
+    userId: string;
+    balances: { userId: string; amount: number; currency: string }[];
+  }[] {
+    const result: {
+      userId: string;
+      balances: { userId: string; amount: number; currency: string }[];
+    }[] = [];
     this.graph.forEach((balanceMap, userId) => {
-      const balances: string[] = [];
+      const balances: { userId: string; amount: number; currency: string }[] =
+        [];
       balanceMap.getBalances().forEach((amount, otherUserId) => {
-        balances.push(
-          `${otherUserId}: ${amount.getAmount()} ${amount.getCurrency()}`
-        );
+        balances.push({
+          userId: otherUserId,
+          amount: amount.getAmount(),
+          currency: amount.getCurrency(),
+        });
       });
-      result.push(`${userId} -> { ${balances.join(", ")} }`);
+      result.push({ userId, balances });
     });
-    return result.join("\n");
+    return result;
   }
 }

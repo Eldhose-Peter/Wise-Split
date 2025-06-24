@@ -11,11 +11,11 @@ export class BalanceMap {
     return this.balances;
   }
 
-  public toSerializable(): string {
-    const result: string[] = [];
+  public toArray(): { userId: string; amount: Amount }[] {
+    const result: { userId: string; amount: Amount }[] = [];
     this.balances.forEach((amount, userId) => {
-      result.push(`${userId}: ${amount.getAmount()} ${amount.getCurrency()}`);
+      result.push({ userId, amount });
     });
-    return result.join(", ");
+    return result;
   }
 }
