@@ -53,4 +53,8 @@ export class GroupService {
     const resultExpense = this.sumExpenses(groupExpenses);
     return resultExpense;
   }
+
+  public async createGroup(userId: number, title: string): Promise<void> {
+    this.groupRepository.createGroup(userId, title);
+  }
 }

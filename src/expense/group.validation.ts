@@ -6,3 +6,9 @@ export const paymentGraphSchema = z.object({
     userid: z.string().min(1, "userid is required"),
   }),
 });
+
+export const createGroupSchema = z.object({
+  body: z.object({
+    title: z.string().min(1, "Group name is required"),
+  }),
+});
