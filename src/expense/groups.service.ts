@@ -57,4 +57,8 @@ export class GroupService {
   public async createGroup(userId: number, title: string): Promise<void> {
     this.groupRepository.createGroup(userId, title);
   }
+
+  public async getGroups(userId: number): Promise<{ id: number; title: string }[]> {
+    return this.groupRepository.getGroupsByUserId(userId);
+  }
 }

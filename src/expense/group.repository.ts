@@ -33,4 +33,20 @@ export class GroupRepository {
 
     return group;
   }
+
+  getGroupsByUserId(userId: number): Promise<{ id: number; title: string }[]> {
+    return prisma.group.findMany({
+      where: {
+        members: {
+          some: {
+            userId,
+          },
+        },
+      },
+      select: {
+        id: true,
+        title: true,
+      },
+    });
+  }
 }

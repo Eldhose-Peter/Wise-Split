@@ -33,6 +33,7 @@ export class GroupController extends Controller {
       validationMiddleware(createGroupSchema),
       this.createGroup
     );
+    this.router.get(`${this.path}/all`, authMiddleware, this.getGroups);
   }
 
   private getPaymentGraph = async (
@@ -79,6 +80,20 @@ export class GroupController extends Controller {
       const userId = request.userId as number;
       const group = await this.groupService.createGroup(userId, title);
       response.status(201).json(group);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  private getGroups = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const userId = request.userId as number;
+      const groups = await this.groupService.getGroups(userId);
+      response.json(groups);
     } catch (error) {
       next(error);
     }
