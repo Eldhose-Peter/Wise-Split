@@ -4,7 +4,11 @@ import { ExpenseService } from "./expense.service";
 import { GroupService } from "./groups.service";
 import authMiddleware from "middleware/auth.middleware";
 import validationMiddleware from "middleware/validation.middleware";
-import { createGroupSchema, paymentGraphSchema } from "./group.validation";
+import {
+  addUserToGroupSchema,
+  createGroupSchema,
+  paymentGraphSchema,
+} from "./group.validation";
 
 export class GroupController extends Controller {
   private expenseService = new ExpenseService();
@@ -34,6 +38,12 @@ export class GroupController extends Controller {
       this.createGroup
     );
     this.router.get(`${this.path}/all`, authMiddleware, this.getGroups);
+    this.router.post(
+      `${this.path}/:groupid/add-users`,
+      authMiddleware,
+      validationMiddleware(addUserToGroupSchema),
+      this.addUsersToGroup
+    );
   }
 
   private getPaymentGraph = async (
@@ -94,6 +104,22 @@ export class GroupController extends Controller {
       const userId = request.userId as number;
       const groups = await this.groupService.getGroups(userId);
       response.json(groups);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  private addUsersToGroup = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const groupId = Number(request.params.groupid);
+      const userIds = request.body.userids.map((id: string) => Number(id));
+      const userId = request.userId as number;
+      await this.groupService.addUsersToGroup(groupId, userIds, userId);
+      response.status(204).send();
     } catch (error) {
       next(error);
     }

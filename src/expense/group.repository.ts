@@ -34,7 +34,9 @@ export class GroupRepository {
     return group;
   }
 
-  getGroupsByUserId(userId: number): Promise<{ id: number; title: string }[]> {
+  public async getGroupsByUserId(
+    userId: number
+  ): Promise<{ id: number; title: string }[]> {
     return prisma.group.findMany({
       where: {
         members: {
@@ -47,6 +49,18 @@ export class GroupRepository {
         id: true,
         title: true,
       },
+    });
+  }
+
+  public async addUsersToGroup(groupId: number, filteredUserIds: number[]) {
+    const createData = filteredUserIds.map((userId) => ({
+      userId,
+      groupId,
+    }));
+
+    await prisma.groupMember.createMany({
+      data: createData,
+      skipDuplicates: true,
     });
   }
 }

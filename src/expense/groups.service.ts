@@ -58,7 +58,31 @@ export class GroupService {
     this.groupRepository.createGroup(userId, title);
   }
 
-  public async getGroups(userId: number): Promise<{ id: number; title: string }[]> {
+  public async getGroups(
+    userId: number
+  ): Promise<{ id: number; title: string }[]> {
     return this.groupRepository.getGroupsByUserId(userId);
+  }
+
+  public async addUsersToGroup(
+    groupId: number,
+    userIds: number[],
+    currentUserId: number
+  ) {
+    const groupMembers = await this.groupRepository.getGroupMembers(groupId);
+
+    // Check if the current user is part of the group
+    if (!groupMembers.includes(currentUserId)) {
+      throw new Error("IllegalAccessException");
+    }
+
+    const filteredUserIds = userIds.filter(
+      (userId) => !groupMembers.includes(userId)
+    );
+
+    if (filteredUserIds.length === 0) {
+      throw new Error("No new users to add");
+    }
+    await this.groupRepository.addUsersToGroup(groupId, filteredUserIds);
   }
 }
