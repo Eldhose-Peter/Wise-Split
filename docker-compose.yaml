@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: splitwise-postgres-db
+    container_name: postgres-db
     image: postgres:latest
     hostname: localhost
     ports:

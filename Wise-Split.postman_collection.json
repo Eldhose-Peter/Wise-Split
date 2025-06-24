@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "63755218-2f5f-410a-a257-127ed93cdf2a",
-		"name": "Splitwise-clone",
+		"name": "Wise-Split",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "19966914"
 	},
@@ -157,7 +157,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"test@gmail.com\",\n    \"password\": \"qwerty\"\n}",
+							"raw": "{\n    \"email\": \"alice@example.com\",\n    \"password\": \"password123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -448,6 +448,69 @@
 							"body": "{\n    \"id\": 1,\n    \"username\": \"test\",\n    \"email\": \"test@gmail.com\",\n    \"password\": \"$2b$10$afeBZIHKV0G0yoXwGSc26e7q/Pk1QEvVPrW0JBmPjQFaJ8lvr0qTu\",\n    \"created_at\": \"2024-10-30T13:37:28.685Z\"\n}"
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "groups",
+			"item": [
+				{
+					"name": "payment-graph",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/v1/groups/1/user/1/payment-graph",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"groups",
+								"1",
+								"user",
+								"1",
+								"payment-graph"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "balances",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/v1/groups/1/user/1/balances",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"groups",
+								"1",
+								"user",
+								"1",
+								"balances"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
