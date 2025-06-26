@@ -4,6 +4,7 @@ import { BalanceMap } from "./models/BalanceMap";
 import { Expense } from "./models/Expense";
 import { PaymentGraph } from "./models/PaymentGraph";
 import { ExpenseRepository } from "./expense.repository";
+import { ExpenseResult, Participant } from "./expense.types";
 
 export class ExpenseService {
   private expenseRepository: ExpenseRepository;
@@ -12,7 +13,37 @@ export class ExpenseService {
   }
 
   public async getGroupExpenses(groupId: number): Promise<Expense[]> {
-    return await this.expenseRepository.getExpenseForGroup(groupId);
+    const result = await this.expenseRepository.getExpenseForGroup(groupId);
+    // Map result to Expense objects
+    const expenses: Expense[] = result.map((item: ExpenseResult) => {
+      const paidById = item.paidById;
+      const amountPaid = new Amount(item.currency, -item.amount); // Negative because it's an expense paid by the user
+      const userBalances: Map<string, Amount> = new Map<string, Amount>();
+      item.participants.forEach((participant: Participant) => {
+        let amountOwed = new Amount(
+          participant.currency,
+          participant.amountOwed
+        );
+        if (participant.userId === paidById) {
+          amountOwed = amountOwed.add(amountPaid);
+        } else {
+          amountOwed = new Amount(participant.currency, participant.amountOwed);
+        }
+        userBalances.set(participant.userId.toString(), amountOwed);
+      });
+
+      const balanceMap = new BalanceMap(userBalances);
+      return new Expense(
+        item.groupId,
+        item.description,
+        balanceMap,
+        item.amount,
+        item.currency,
+        paidById,
+        new Date(item.createdAt)
+      );
+    });
+    return expenses;
   }
 
   // Algorithm
@@ -75,6 +106,19 @@ export class ExpenseService {
     return new PaymentGraph(graph);
   }
 
+  private async validateGroupMembers(
+    groupId: number,
+    userIds: number[]
+  ): Promise<void> {
+    const groupMembers = await this.expenseRepository.getGroupMembers(groupId);
+    const memberSet = new Set(groupMembers);
+    for (const userId of userIds) {
+      if (!memberSet.has(userId)) {
+        throw new Error(`User with ID ${userId} is not a member of the group.`);
+      }
+    }
+  }
+
   addExpense(
     groupId: number,
     description: string,
@@ -92,8 +136,27 @@ export class ExpenseService {
       )
     );
 
-    // TODO: Validate that the total amount matches the sum of user balances
-    // TODO: Validate that all the members are part of the group
+    // Validate all users are part of the group
+    this.validateGroupMembers(
+      groupId,
+      Array.from(
+        new Set([
+          ...Array.from(balanceMap.getBalances().keys()).map(Number),
+          paidBy,
+        ])
+      )
+    );
+
+    // Validate that the total amount matches the sum of user balances
+    const totalBalance = Array.from(balanceMap.getBalances().values()).reduce(
+      (sum, amount) => sum + amount.getAmount(),
+      0
+    );
+    if (totalBalance !== amount) {
+      throw new Error(
+        `Total balance of user balances (${totalBalance}) does not match the expense amount (${amount}).`
+      );
+    }
     const expense = new Expense(
       groupId,
       description,
