@@ -74,4 +74,34 @@ export class ExpenseService {
 
     return new PaymentGraph(graph);
   }
+
+  addExpense(
+    groupId: number,
+    description: string,
+    userBalances: Record<string, number>,
+    amount: number,
+    currency: string,
+    paidBy: number
+  ) {
+    const balanceMap = new BalanceMap(
+      new Map(
+        Object.entries(userBalances).map(([userId, userAmount]) => [
+          userId,
+          new Amount(currency, userAmount),
+        ])
+      )
+    );
+
+    // TODO: Validate that the total amount matches the sum of user balances
+    // TODO: Validate that all the members are part of the group
+    const expense = new Expense(
+      groupId,
+      description,
+      balanceMap,
+      amount,
+      currency,
+      paidBy
+    );
+    return this.expenseRepository.addExpense(expense);
+  }
 }

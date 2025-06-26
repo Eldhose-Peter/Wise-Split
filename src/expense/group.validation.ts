@@ -23,3 +23,25 @@ export const addUserToGroupSchema = z.object({
       .min(1, "At least one userid is required"),
   }),
 });
+
+export const getGroupExpensesSchema = z.object({
+  params: z.object({
+    groupid: z.string().min(1, "groupid is required"),
+  }),
+});
+
+export const addExpenseSchema = z.object({
+  params: z.object({
+    groupid: z.string().min(1, "groupid is required"),
+  }),
+  body: z.object({
+    description: z.string().min(1, "Description is required"),
+    userBalances: z.record(
+      z.string().min(1, "userid is required"),
+      z.number().min(0, "Amount must be a positive number")
+    ),
+    currency: z.string().min(1, "Currency is required"),
+    amount: z.number().min(0, "Amount must be a positive number"),
+    paidBy: z.string().min(1, "paidBy is required"),
+  }),
+});

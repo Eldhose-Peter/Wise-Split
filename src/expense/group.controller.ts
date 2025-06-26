@@ -5,8 +5,10 @@ import { GroupService } from "./groups.service";
 import authMiddleware from "middleware/auth.middleware";
 import validationMiddleware from "middleware/validation.middleware";
 import {
+  addExpenseSchema,
   addUserToGroupSchema,
   createGroupSchema,
+  getGroupExpensesSchema,
   paymentGraphSchema,
 } from "./group.validation";
 
@@ -43,6 +45,18 @@ export class GroupController extends Controller {
       authMiddleware,
       validationMiddleware(addUserToGroupSchema),
       this.addUsersToGroup
+    );
+    this.router.get(
+      `${this.path}/:groupid/expenses`,
+      authMiddleware,
+      validationMiddleware(getGroupExpensesSchema),
+      this.getGroupExpenses
+    );
+    this.router.post(
+      `${this.path}/:groupid/expense`,
+      authMiddleware,
+      validationMiddleware(addExpenseSchema),
+      this.addGroupExpense
     );
   }
 
@@ -120,6 +134,45 @@ export class GroupController extends Controller {
       const userId = request.userId as number;
       await this.groupService.addUsersToGroup(groupId, userIds, userId);
       response.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  private getGroupExpenses = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const groupId = Number(request.params.groupid);
+      const expenses = await this.expenseService.getGroupExpenses(groupId);
+      response.json(expenses.map((expense) => expense.toArray()));
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  private addGroupExpense = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const groupId = Number(request.params.groupid);
+      const { description, userBalances, amount, currency, paidBy } =
+        request.body;
+
+      await this.expenseService.addExpense(
+        groupId,
+        description,
+        userBalances,
+        amount,
+        currency,
+        Number(paidBy)
+      );
+
+      response.status(201).json({});
     } catch (error) {
       next(error);
     }

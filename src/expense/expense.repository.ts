@@ -9,6 +9,8 @@ export class ExpenseRepository {
       where: { groupId },
       select: {
         id: true,
+        groupId: true,
+        createdAt: true,
         description: true,
         amount: true,
         currency: true,
@@ -32,6 +34,8 @@ export class ExpenseRepository {
 
     type ExpenseResult = {
       id: number;
+      groupId: number;
+      createdAt: Date;
       description: string;
       amount: number;
       currency: string;
@@ -40,7 +44,6 @@ export class ExpenseRepository {
     };
 
     const expenses: Expense[] = result.map((item: ExpenseResult) => {
-      const description = item.description;
       const paidById = item.paidById;
       const amountPaid = new Amount(item.currency, -item.amount); // Negative because it's an expense paid by the user
       const userBalances: Map<string, Amount> = new Map<string, Amount>();
@@ -58,8 +61,42 @@ export class ExpenseRepository {
       });
 
       const balanceMap = new BalanceMap(userBalances);
-      return new Expense(description, balanceMap);
+      return new Expense(
+        item.groupId,
+        item.description,
+        balanceMap,
+        item.amount,
+        item.currency,
+        paidById,
+        new Date(item.createdAt)
+      );
     });
     return expenses;
+  }
+
+  public async addExpense(expense: Expense): Promise<void> {
+    const userBalances = expense.getUserBalances().getBalances();
+    const participants = Array.from(userBalances.entries()).map(
+      ([userId, amount]) => ({
+        userId: Number(userId),
+        amountOwed: amount.getAmount(),
+        currency: amount.getCurrency(),
+      })
+    );
+
+    await prisma.expense.create({
+      data: {
+        groupId: expense.getGroupId(),
+        description: expense.getDescription(),
+        amount: expense.getAmount(),
+        currency: expense.getCurrency(),
+        paidById: expense.getPaidById(),
+        participants: {
+          createMany: {
+            data: participants,
+          },
+        },
+      },
+    });
   }
 }
