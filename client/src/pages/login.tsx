@@ -1,6 +1,7 @@
 // src/app/LoginRegister.js
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { AuthApi } from "@/api/authApi";
 
 export default function LoginRegister() {
   const router = useRouter();
@@ -13,28 +14,16 @@ export default function LoginRegister() {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    const endpoint = isLogin
-      ? "http://localhost:3001/api/v1/auth/login"
-      : "http://localhost:3001/api/v1/auth/register";
-    const body = isLogin ? { email, password } : { username, email, password };
-
     try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-
-      console.log(response);
-
-      if (response.ok) {
-        router.push("/"); // Redirect to home on successful login or register
+      if (isLogin) {
+        await AuthApi.login(email, password);
       } else {
-        // Handle error (optional)
-        alert(isLogin ? "Login failed" : "Registration failed");
+        await AuthApi.register(username, email, password);
       }
+      router.push("/"); // Redirect to home on successful login or register
     } catch (error) {
+      alert(isLogin ? "Login failed" : "Registration failed");
+      // Optionally log error
       console.error("Error:", error);
     }
   };

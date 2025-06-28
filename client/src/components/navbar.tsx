@@ -1,34 +1,21 @@
 import { useRouter } from "next/router";
 import NavItem from "./navItem";
 import { useEffect, useState } from "react";
+import { AuthApi } from "../api/authApi";
 
 export default function Navbar() {
   const router = useRouter();
-  const [username, setUsername] = useState(null);
+  const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/v1/auth/me", {
-          method: "GET",
-          credentials: "include", // Include credentials (like cookies) in the request
-        });
-
-        if (!response.ok) {
-          // If the response is not ok (e.g., unauthorized), set username to null
-          if (response.status === 401) {
-            setUsername(null);
-          }
-          return;
-        }
-
-        const data = await response.json();
-        setUsername(data.userName); // Assuming the response has a username field
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+        const data = await AuthApi.fetchMe();
+        setUsername(data.userName); // Assuming the response has a userName field
+      } catch {
+        setUsername(null);
       }
     };
-
     fetchUser();
   }, [router]);
 
@@ -38,17 +25,9 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/v1/auth/logout", {
-        method: "DELETE",
-        credentials: "include", // Include credentials (like cookies) in the request
-      });
-
-      if (response.ok) {
-        setUsername(null); // Clear username on successful logout
-        router.push("/"); // Redirect to home page after logout
-      } else {
-        console.error("Failed to log out");
-      }
+      await AuthApi.logout();
+      setUsername(null); // Clear username on successful logout
+      router.push("/"); // Redirect to home page after logout
     } catch (error) {
       console.error("Error during logout:", error);
     }
