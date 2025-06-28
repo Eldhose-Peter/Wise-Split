@@ -9,9 +9,9 @@ export default function Navbar() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/v1/auth/me", {
+        const response = await fetch("http://localhost:3001/api/v1/auth/me", {
           method: "GET",
-          credentials: "include" // Include credentials (like cookies) in the request
+          credentials: "include", // Include credentials (like cookies) in the request
         });
 
         if (!response.ok) {
@@ -23,7 +23,7 @@ export default function Navbar() {
         }
 
         const data = await response.json();
-        setUsername(data.username); // Assuming the response has a username field
+        setUsername(data.userName); // Assuming the response has a username field
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -38,9 +38,9 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/v1/auth/logout", {
+      const response = await fetch("http://localhost:3001/api/v1/auth/logout", {
         method: "DELETE",
-        credentials: "include" // Include credentials (like cookies) in the request
+        credentials: "include", // Include credentials (like cookies) in the request
       });
 
       if (response.ok) {

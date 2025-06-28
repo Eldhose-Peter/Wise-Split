@@ -14,8 +14,8 @@ export default function LoginRegister() {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const endpoint = isLogin
-      ? "http://localhost:3000/api/v1/auth/login"
-      : "http://localhost:3000/api/v1/auth/register";
+      ? "http://localhost:3001/api/v1/auth/login"
+      : "http://localhost:3001/api/v1/auth/register";
     const body = isLogin ? { email, password } : { username, email, password };
 
     try {
@@ -23,7 +23,7 @@ export default function LoginRegister() {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       });
 
       console.log(response);
@@ -42,7 +42,9 @@ export default function LoginRegister() {
   return (
     <div className="flex-grow flex justify-center items-center">
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-        <h1 className="text-3xl font-bold ">{isLogin ? "Login" : "Register"}</h1>
+        <h1 className="text-3xl font-bold ">
+          {isLogin ? "Login" : "Register"}
+        </h1>
         {!isLogin && (
           <input
             type="text"
@@ -75,8 +77,14 @@ export default function LoginRegister() {
         >
           {isLogin ? "Login" : "Register"}
         </button>
-        <button type="button" onClick={handleToggle} className="text-blue-500 hover:underline mt-2">
-          {isLogin ? "Don't have an account? Register here" : "Already have an account? Login here"}
+        <button
+          type="button"
+          onClick={handleToggle}
+          className="text-blue-500 hover:underline mt-2"
+        >
+          {isLogin
+            ? "Don't have an account? Register here"
+            : "Already have an account? Login here"}
         </button>
       </form>
     </div>
