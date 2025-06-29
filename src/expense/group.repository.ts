@@ -13,16 +13,16 @@ export class GroupRepository {
   }
 
   public async createGroup(
-    userId: number,
+    userIds: number[],
     title: string
   ): Promise<{ id: number; title: string }> {
     const group = await prisma.group.create({
       data: {
         title,
         members: {
-          create: {
+          create: userIds.map((userId) => ({
             userId,
-          },
+          })),
         },
       },
       select: {

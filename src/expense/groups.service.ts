@@ -54,8 +54,8 @@ export class GroupService {
     return resultExpense;
   }
 
-  public async createGroup(userId: number, title: string): Promise<void> {
-    this.groupRepository.createGroup(userId, title);
+  public async createGroup(userIds: number[], title: string): Promise<void> {
+    this.groupRepository.createGroup(userIds, title);
   }
 
   public async getGroups(

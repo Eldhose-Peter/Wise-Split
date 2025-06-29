@@ -100,9 +100,10 @@ export class GroupController extends Controller {
     next: NextFunction
   ) => {
     try {
-      const { title } = request.body;
+      const { title, userIds } = request.body;
       const userId = request.userId as number;
-      const group = await this.groupService.createGroup(userId, title);
+      userIds.push(userId); // Include the creator in the group
+      const group = await this.groupService.createGroup(userIds, title);
       response.status(201).json(group);
     } catch (error) {
       next(error);

@@ -11,6 +11,8 @@ export class UserRepository {
         lastName: true,
         bio: true,
         imageUrl: true,
+        createdAt: true,
+        userName: true,
       },
     });
     return result;
@@ -26,6 +28,8 @@ export class UserRepository {
         lastName: true,
         bio: true,
         imageUrl: true,
+        createdAt: true,
+        userName: true,
       },
     });
     return result;

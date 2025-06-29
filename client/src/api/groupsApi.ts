@@ -10,4 +10,13 @@ export class GroupApi {
       credentials: "include",
     });
   }
+
+  static async createGroup(data: { title: string; userIds: string[] }) {
+    return fetchClient<Group>(`${API_BASE}/create`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+  }
 }
