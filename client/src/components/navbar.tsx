@@ -34,7 +34,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="py-4 px-6 text-sm font-medium bg-slate-800 flex justify-between items-center">
+    <nav className="py-4 px-6 text-sm font-medium bg-white flex justify-between items-center border-b border-gray-200">
       <ul className="flex space-x-3">
         <NavItem href="/" isActive={router.pathname === "/"}>
           Home
@@ -46,7 +46,7 @@ export default function Navbar() {
       <div className="flex items-center">
         {username ? (
           <>
-            <span className="text-white">{username}</span>
+            <span className="text-gray-900">{username}</span>
             <button
               onClick={handleLogout}
               className="ml-4 text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded"

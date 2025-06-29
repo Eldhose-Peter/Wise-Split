@@ -38,9 +38,11 @@ export default function Page() {
 
   if (!user) {
     return (
-      <div className="flex-grow flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Wise-Split!</h1>
-        <p className="text-lg mb-6">
+      <div className="flex-grow flex flex-col items-center justify-center bg-white">
+        <h1 className="text-4xl font-bold mb-4 text-gray-900">
+          Welcome to Wise-Split!
+        </h1>
+        <p className="text-lg mb-6 text-gray-700">
           Please log in to view your groups and manage expenses.
         </p>
       </div>
@@ -48,9 +50,11 @@ export default function Page() {
   }
 
   return (
-    <div className="flex-grow flex flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold mb-4">Welcome to Wise-Split!</h1>
-      <p className="text-lg mb-6">
+    <div className="flex-grow flex flex-col items-center justify-center bg-white">
+      <h1 className="text-4xl font-bold mb-4 text-gray-900">
+        Welcome to Wise-Split!
+      </h1>
+      <p className="text-lg mb-6 text-gray-700">
         You are logged in.{" "}
         <a href="/groups" className="text-blue-500 underline">
           View your groups

@@ -23,8 +23,8 @@ export default function GroupsPage() {
   }, []);
 
   return (
-    <div className="flex-grow flex flex-col items-center">
-      <h1 className="text-3xl font-bold my-4">Groups</h1>
+    <div className="flex-grow flex flex-col items-center bg-white">
+      <h1 className="text-3xl font-bold my-4 text-gray-900">Groups</h1>
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
       <div className="flex overflow-x-auto space-x-4 w-full max-w-4xl py-4">

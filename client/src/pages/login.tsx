@@ -29,9 +29,12 @@ export default function LoginRegister() {
   };
 
   return (
-    <div className="flex-grow flex justify-center items-center">
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-        <h1 className="text-3xl font-bold ">
+    <div className="flex-grow flex justify-center items-center bg-white">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col space-y-4 bg-white p-8 rounded shadow-md"
+      >
+        <h1 className="text-3xl font-bold text-gray-900 ">
           {isLogin ? "Login" : "Register"}
         </h1>
         {!isLogin && (
