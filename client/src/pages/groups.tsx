@@ -45,7 +45,7 @@ export default function GroupsPage() {
       {error && <p className="text-red-500">{error}</p>}
       <div className="flex overflow-x-auto space-x-4 w-full max-w-4xl py-4">
         {groups.map((group) => (
-          <GroupCard key={group.id} name={group.title} />
+          <GroupCard key={group.id} id={group.id} name={group.title} />
         ))}
       </div>
     </div>
