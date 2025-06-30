@@ -2,6 +2,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { GroupApi } from "@/api/groupsApi";
 import { Expense } from "@/types/expense.type";
+import { AuthApi } from "@/api/authApi";
+import { User } from "@/types/user.type";
+import { ExpenseCard } from "@/components/ExpenseCard";
 
 export default function GroupDetailsPage() {
   const router = useRouter();
@@ -11,6 +14,19 @@ export default function GroupDetailsPage() {
   const [expenses, setExpenses] = useState<Expense[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const user = await AuthApi.fetchMe();
+        setCurrentUser(user);
+      } catch {
+        setCurrentUser(null);
+      }
+    }
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -37,24 +53,11 @@ export default function GroupDetailsPage() {
       {expenses && expenses.length > 0 ? (
         <ul className="mb-6">
           {expenses.map((expense, idx) => (
-            <li key={idx} className="mb-4 p-4 border rounded">
-              <div className="font-semibold">{expense.description}</div>
-              <div>
-                Amount: {expense.amount} {expense.currency}
-              </div>
-              <div>Paid By: {expense.paidById}</div>
-              <div>Date: {new Date(expense.createdAt).toLocaleString()}</div>
-              <div className="mt-2">
-                <span className="font-medium">User Balances:</span>
-                <ul className="ml-4 list-disc">
-                  {expense.userBalances.map((ub, i) => (
-                    <li key={i}>
-                      User {ub.userId}: {ub.amount} {ub.currency}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </li>
+            <ExpenseCard
+              key={idx}
+              expense={expense}
+              currentUser={currentUser}
+            />
           ))}
         </ul>
       ) : (
