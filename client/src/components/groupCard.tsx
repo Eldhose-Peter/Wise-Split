@@ -10,7 +10,10 @@ interface GroupCardProps {
 const GroupCard: React.FC<GroupCardProps> = ({ id, name, description }) => {
   const router = useRouter();
   const handleClick = () => {
-    router.push(`/groups/${id}`);
+    router.push({
+      pathname: `/groups/${id}`,
+      query: { groupName: name },
+    });
   };
   return (
     <div

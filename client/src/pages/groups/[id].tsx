@@ -6,6 +6,8 @@ import { Expense } from "@/types/expense.type";
 export default function GroupDetailsPage() {
   const router = useRouter();
   const { id } = router.query;
+  // Get groupName from router state
+  const groupName = router.query.groupName || "Group";
   const [expenses, setExpenses] = useState<Expense[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -30,7 +32,8 @@ export default function GroupDetailsPage() {
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded shadow">
-      <h1 className="text-2xl font-bold mb-4">Expenses</h1>
+      <h1 className="text-2xl font-bold mb-4">{groupName}</h1>
+      <h2 className="text-lg font-semibold mb-2">Expenses</h2>
       {expenses && expenses.length > 0 ? (
         <ul className="mb-6">
           {expenses.map((expense, idx) => (
