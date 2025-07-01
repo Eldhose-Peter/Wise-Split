@@ -147,14 +147,14 @@ export class ExpenseService {
       )
     );
 
-    // Validate that the total amount matches the sum of user balances
+    // Validate that the total balance is zero
     const totalBalance = Array.from(balanceMap.getBalances().values()).reduce(
       (sum, amount) => sum + amount.getAmount(),
       0
     );
-    if (totalBalance !== amount) {
+    if (totalBalance !== 0) {
       throw new Error(
-        `Total balance of user balances (${totalBalance}) does not match the expense amount (${amount}).`
+        `Total balance must be zero, but got ${totalBalance} for expense - ${description}.`
       );
     }
     const expense = new Expense(

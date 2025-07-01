@@ -8,7 +8,7 @@ interface ExpenseCardProps {
 }
 
 function getUserBalance(expense: Expense, userId: string) {
-  return expense.userBalances.find((ub) => ub.userId === userId);
+  return expense.userBalances.find((ub) => ub.userId == userId);
 }
 
 export const ExpenseCard: React.FC<ExpenseCardProps> = ({
@@ -22,30 +22,17 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
     );
   } else {
     const userBalance = getUserBalance(expense, currentUser.id);
-    if (expense.paidById === currentUser.id) {
-      cardContent = (
-        <>
-          <div className="text-lg font-semibold text-blue-700">
-            You paid: {expense.amount} {expense.currency}
-          </div>
-          {userBalance && userBalance.amount < 0 && (
-            <div className="text-red-600">
-              You are owed {Math.abs(userBalance.amount)} {userBalance.currency}
-            </div>
-          )}
-        </>
-      );
-    } else if (userBalance) {
-      if (userBalance.amount < 0) {
+    if (userBalance) {
+      if (userBalance.amount > 0) {
         cardContent = (
           <div className="text-red-600">
-            You owe {Math.abs(userBalance.amount)} {userBalance.currency}
+            You owe -{userBalance.amount} {userBalance.currency}
           </div>
         );
-      } else if (userBalance.amount > 0) {
+      } else if (userBalance.amount < 0) {
         cardContent = (
           <div className="text-green-600">
-            You are owed {userBalance.amount} {userBalance.currency}
+            You are owed +{Math.abs(userBalance.amount)} {userBalance.currency}
           </div>
         );
       } else {
@@ -74,7 +61,7 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
             </span>
           </div>
           <div className="text-base text-gray-700">
-            Total: {" "}
+            Total:{" "}
             <span className="font-semibold">
               {expense.amount} {expense.currency}
             </span>
