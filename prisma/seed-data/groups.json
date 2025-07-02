@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Trip to Paris",
+    "memberUserNames": ["user1", "user2", "user3", "user4", "user5", "user6"]
+  },
+  {
+    "title": "Mountain Adventure",
+    "memberUserNames": ["user4", "user5", "user6", "user7", "user8", "user9"]
+  },
+  {
+    "title": "Beach Getaway",
+    "memberUserNames": ["user7", "user8", "user9", "user10", "user11", "user12"]
+  },
+  {
+    "title": "City Exploration",
+    "memberUserNames": ["user13", "user14", "user15", "user16", "user17", "user18"]
+  },
+  {
+    "title": "Desert Safari",
+    "memberUserNames": ["user19", "user20", "user21", "user22", "user23", "user24", "user25", "user1", "user2"]
+  }
+]
