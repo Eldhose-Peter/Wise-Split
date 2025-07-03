@@ -1,4 +1,4 @@
-import { Expense } from "@/types/expense.type";
+import { Balance, Expense, PaymentGraph } from "@/types/expense.type";
 import { fetchClient } from "./fetchClient";
 import { Group } from "@/types/group.type";
 
@@ -26,5 +26,25 @@ export class GroupApi {
       method: "GET",
       credentials: "include",
     });
+  }
+
+  static async getBalances(groupId: string, userId: number) {
+    return fetchClient<Balance[]>(
+      `${API_BASE}/${groupId}/user/${userId}/balances`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+  }
+
+  static async getPaymentGraph(groupId: string, userId: number) {
+    return fetchClient<PaymentGraph[]>(
+      `${API_BASE}/${groupId}/user/${userId}/payment-graph`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
   }
 }
