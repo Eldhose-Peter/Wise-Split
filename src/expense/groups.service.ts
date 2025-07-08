@@ -1,3 +1,4 @@
+import { UserDetails } from "users/users.model";
 import { ExpenseService } from "./expense.service";
 import { GroupRepository } from "./group.repository";
 import { Amount } from "./models/Amount";
@@ -42,7 +43,7 @@ export class GroupService {
     groupId: number,
     userId: number
   ): Promise<BalanceMap> {
-    const group = await this.groupRepository.getGroupMembers(groupId);
+    const group = await this.groupRepository.getGroupMemberIds(groupId);
 
     // Check if the group exists and if the user is part of the group
     if (group.length == 0 || !group.includes(userId)) {
@@ -52,5 +53,41 @@ export class GroupService {
     const groupExpenses = await this.expenseService.getGroupExpenses(groupId);
     const resultExpense = this.sumExpenses(groupExpenses);
     return resultExpense;
+  }
+
+  public async createGroup(userIds: number[], title: string): Promise<void> {
+    this.groupRepository.createGroup(userIds, title);
+  }
+
+  public async getGroups(
+    userId: number
+  ): Promise<{ id: number; title: string }[]> {
+    return this.groupRepository.getGroupsByUserId(userId);
+  }
+
+  public async addUsersToGroup(
+    groupId: number,
+    userIds: number[],
+    currentUserId: number
+  ) {
+    const groupMembers = await this.groupRepository.getGroupMemberIds(groupId);
+
+    // Check if the current user is part of the group
+    if (!groupMembers.includes(currentUserId)) {
+      throw new Error("IllegalAccessException");
+    }
+
+    const filteredUserIds = userIds.filter(
+      (userId) => !groupMembers.includes(userId)
+    );
+
+    if (filteredUserIds.length === 0) {
+      throw new Error("No new users to add");
+    }
+    await this.groupRepository.addUsersToGroup(groupId, filteredUserIds);
+  }
+
+  public async getGroupMembers(groupId: number): Promise<UserDetails[]> {
+    return this.groupRepository.getGroupMembers(groupId);
   }
 }

@@ -1,6 +1,7 @@
 // src/app/LoginRegister.js
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { AuthApi } from "@/api/authApi";
 
 export default function LoginRegister() {
   const router = useRouter();
@@ -13,36 +14,29 @@ export default function LoginRegister() {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    const endpoint = isLogin
-      ? "http://localhost:3000/api/v1/auth/login"
-      : "http://localhost:3000/api/v1/auth/register";
-    const body = isLogin ? { email, password } : { username, email, password };
-
     try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      });
-
-      console.log(response);
-
-      if (response.ok) {
-        router.push("/"); // Redirect to home on successful login or register
+      if (isLogin) {
+        await AuthApi.login(email, password);
       } else {
-        // Handle error (optional)
-        alert(isLogin ? "Login failed" : "Registration failed");
+        await AuthApi.register(username, email, password);
       }
+      router.push("/"); // Redirect to home on successful login or register
     } catch (error) {
+      alert(isLogin ? "Login failed" : "Registration failed");
+      // Optionally log error
       console.error("Error:", error);
     }
   };
 
   return (
-    <div className="flex-grow flex justify-center items-center">
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-        <h1 className="text-3xl font-bold ">{isLogin ? "Login" : "Register"}</h1>
+    <div className="flex-grow flex justify-center items-center bg-white">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col space-y-4 bg-white p-8 rounded shadow-md"
+      >
+        <h1 className="text-3xl font-bold text-gray-900 ">
+          {isLogin ? "Login" : "Register"}
+        </h1>
         {!isLogin && (
           <input
             type="text"
@@ -75,8 +69,14 @@ export default function LoginRegister() {
         >
           {isLogin ? "Login" : "Register"}
         </button>
-        <button type="button" onClick={handleToggle} className="text-blue-500 hover:underline mt-2">
-          {isLogin ? "Don't have an account? Register here" : "Already have an account? Login here"}
+        <button
+          type="button"
+          onClick={handleToggle}
+          className="text-blue-500 hover:underline mt-2"
+        >
+          {isLogin
+            ? "Don't have an account? Register here"
+            : "Already have an account? Login here"}
         </button>
       </form>
     </div>

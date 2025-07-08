@@ -1,0 +1,227 @@
+[
+  {
+    "email": "user1@example.com",
+    "userName": "user1",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "One",
+    "bio": "Bio for user 1",
+    "imageUrl": "https://randomuser.me/api/portraits/men/11.jpg"
+  },
+  {
+    "email": "user2@example.com",
+    "userName": "user2",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Two",
+    "bio": "Bio for user 2",
+    "imageUrl": "https://randomuser.me/api/portraits/women/12.jpg"
+  },
+  {
+    "email": "user3@example.com",
+    "userName": "user3",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Three",
+    "bio": "Bio for user 3",
+    "imageUrl": "https://randomuser.me/api/portraits/men/13.jpg"
+  },
+  {
+    "email": "user4@example.com",
+    "userName": "user4",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Four",
+    "bio": "Bio for user 4",
+    "imageUrl": "https://randomuser.me/api/portraits/women/14.jpg"
+  },
+  {
+    "email": "user5@example.com",
+    "userName": "user5",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Five",
+    "bio": "Bio for user 5",
+    "imageUrl": "https://randomuser.me/api/portraits/men/15.jpg"
+  },
+  {
+    "email": "user6@example.com",
+    "userName": "user6",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Six",
+    "bio": "Bio for user 6",
+    "imageUrl": "https://randomuser.me/api/portraits/women/16.jpg"
+  },
+  {
+    "email": "user7@example.com",
+    "userName": "user7",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Seven",
+    "bio": "Bio for user 7",
+    "imageUrl": "https://randomuser.me/api/portraits/men/17.jpg"
+  },
+  {
+    "email": "user8@example.com",
+    "userName": "user8",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Eight",
+    "bio": "Bio for user 8",
+    "imageUrl": "https://randomuser.me/api/portraits/women/18.jpg"
+  },
+  {
+    "email": "user9@example.com",
+    "userName": "user9",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Nine",
+    "bio": "Bio for user 9",
+    "imageUrl": "https://randomuser.me/api/portraits/men/19.jpg"
+  },
+  {
+    "email": "user10@example.com",
+    "userName": "user10",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Ten",
+    "bio": "Bio for user 10",
+    "imageUrl": "https://randomuser.me/api/portraits/women/20.jpg"
+  },
+  {
+    "email": "user11@example.com",
+    "userName": "user11",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Eleven",
+    "bio": "Bio for user 11",
+    "imageUrl": "https://randomuser.me/api/portraits/men/21.jpg"
+  },
+  {
+    "email": "user12@example.com",
+    "userName": "user12",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Twelve",
+    "bio": "Bio for user 12",
+    "imageUrl": "https://randomuser.me/api/portraits/women/22.jpg"
+  },
+  {
+    "email": "user13@example.com",
+    "userName": "user13",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Thirteen",
+    "bio": "Bio for user 13",
+    "imageUrl": "https://randomuser.me/api/portraits/men/23.jpg"
+  },
+  {
+    "email": "user14@example.com",
+    "userName": "user14",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Fourteen",
+    "bio": "Bio for user 14",
+    "imageUrl": "https://randomuser.me/api/portraits/women/24.jpg"
+  },
+  {
+    "email": "user15@example.com",
+    "userName": "user15",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Fifteen",
+    "bio": "Bio for user 15",
+    "imageUrl": "https://randomuser.me/api/portraits/men/25.jpg"
+  },
+  {
+    "email": "user16@example.com",
+    "userName": "user16",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Sixteen",
+    "bio": "Bio for user 16",
+    "imageUrl": "https://randomuser.me/api/portraits/women/26.jpg"
+  },
+  {
+    "email": "user17@example.com",
+    "userName": "user17",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Seventeen",
+    "bio": "Bio for user 17",
+    "imageUrl": "https://randomuser.me/api/portraits/men/27.jpg"
+  },
+  {
+    "email": "user18@example.com",
+    "userName": "user18",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Eighteen",
+    "bio": "Bio for user 18",
+    "imageUrl": "https://randomuser.me/api/portraits/women/28.jpg"
+  },
+  {
+    "email": "user19@example.com",
+    "userName": "user19",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Nineteen",
+    "bio": "Bio for user 19",
+    "imageUrl": "https://randomuser.me/api/portraits/men/29.jpg"
+  },
+  {
+    "email": "user20@example.com",
+    "userName": "user20",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "Twenty",
+    "bio": "Bio for user 20",
+    "imageUrl": "https://randomuser.me/api/portraits/women/30.jpg"
+  },
+  {
+    "email": "user21@example.com",
+    "userName": "user21",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "TwentyOne",
+    "bio": "Bio for user 21",
+    "imageUrl": "https://randomuser.me/api/portraits/men/31.jpg"
+  },
+  {
+    "email": "user22@example.com",
+    "userName": "user22",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "TwentyTwo",
+    "bio": "Bio for user 22",
+    "imageUrl": "https://randomuser.me/api/portraits/women/32.jpg"
+  },
+  {
+    "email": "user23@example.com",
+    "userName": "user23",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "TwentyThree",
+    "bio": "Bio for user 23",
+    "imageUrl": "https://randomuser.me/api/portraits/men/33.jpg"
+  },
+  {
+    "email": "user24@example.com",
+    "userName": "user24",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "TwentyFour",
+    "bio": "Bio for user 24",
+    "imageUrl": "https://randomuser.me/api/portraits/women/34.jpg"
+  },
+  {
+    "email": "user25@example.com",
+    "userName": "user25",
+    "password": "password123",
+    "firstName": "User",
+    "lastName": "TwentyFive",
+    "bio": "Bio for user 25",
+    "imageUrl": "https://randomuser.me/api/portraits/men/35.jpg"
+  }
+]

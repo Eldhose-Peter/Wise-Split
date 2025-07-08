@@ -12,7 +12,7 @@ export default function NavItem({ href, isActive, children }: NavItemProps) {
     <li>
       <Link
         href={href}
-        className={`block px-3 py-2 rounded-md ${isActive ? "bg-sky-500 text-white" : "bg-slate-800"}`}
+        className={`block px-3 py-2 rounded-md ${isActive ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-900"}`}
       >
         {children}
       </Link>
