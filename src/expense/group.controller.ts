@@ -58,6 +58,11 @@ export class GroupController extends Controller {
       validationMiddleware(addExpenseSchema),
       this.addGroupExpense
     );
+    this.router.get(
+      `${this.path}/:groupid/members`,
+      authMiddleware,
+      this.getGroupMembers
+    );
   }
 
   private getPaymentGraph = async (
@@ -161,8 +166,9 @@ export class GroupController extends Controller {
   ) => {
     try {
       const groupId = Number(request.params.groupid);
-      const { description, userBalances, amount, currency, paidBy } =
+      const { description, userBalances, amount, currency, paidById } =
         request.body;
+
 
       await this.expenseService.addExpense(
         groupId,
@@ -170,10 +176,24 @@ export class GroupController extends Controller {
         userBalances,
         amount,
         currency,
-        Number(paidBy)
+        paidById
       );
 
       response.status(201).json({});
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  private getGroupMembers = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const groupId = Number(request.params.groupid);
+      const members = await this.groupService.getGroupMembers(groupId);
+      response.json(members);
     } catch (error) {
       next(error);
     }

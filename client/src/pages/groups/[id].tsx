@@ -1,7 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { GroupApi } from "@/api/groupsApi";
-import { Expense, PaymentGraph } from "@/types/expense.type";
+import { Balance, Expense, PaymentGraph } from "@/types/expense.type";
+import { AddExpenseModal } from "@/components/AddExpenseModal";
 import { AuthApi } from "@/api/authApi";
 import { User } from "@/types/user.type";
 import { ExpenseCard } from "@/components/ExpenseCard";
@@ -17,7 +18,28 @@ export default function GroupDetailsPage() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const [userBalance, setUserBalance] = useState<number | null>(null);
-  const [graph, setGraph] = useState<PaymentGraph | null>(null);
+  const [getGraph, setGetGraph] = useState<PaymentGraph | null>(null);
+  const [oweGraph, setOweGraph] = useState<Balance[]>();
+
+  // Add Expense Modal State
+  const [showAddExpense, setShowAddExpense] = useState(false);
+  const [members, setMembers] = useState<User[]>([]);
+  // Fetch group members for splitting
+  useEffect(() => {
+    if (!id) return;
+    async function fetchMembers() {
+      try {
+        // Assuming GroupApi.getGroupMembers exists and returns User[]
+        if (GroupApi.getGroupMembers) {
+          const users = await GroupApi.getGroupMembers(id as string);
+          setMembers(users);
+        }
+      } catch {
+        console.error("Failed to load group members");
+      }
+    }
+    fetchMembers();
+  }, [id]);
 
   useEffect(() => {
     async function fetchUser() {
@@ -84,7 +106,29 @@ export default function GroupDetailsPage() {
             return String(pg.userId) === String(currentUser.id);
           });
           if (foundGraph) {
-            setGraph(foundGraph);
+            setGetGraph(foundGraph);
+          }
+
+          const balances = paymentGraphRes
+            .map((pg) => {
+              const balance = pg.balances.find((b) => {
+                return String(b.userId) === String(currentUser.id);
+              });
+              if (balance) {
+                return {
+                  userId: pg.userId,
+                  amount: {
+                    amount: Number(balance.amount),
+                    currency: balance.currency || "INR", // Default to INR if currency is not provided
+                  },
+                };
+              }
+              return undefined;
+            })
+            .filter((b): b is Balance => b !== undefined);
+
+          if (balances) {
+            setOweGraph(balances);
           }
         }
       } catch {
@@ -99,7 +143,25 @@ export default function GroupDetailsPage() {
 
   return (
     <div className="flex-grow max-w-2xl mx-auto p-6 bg-white rounded shadow">
-      <h1 className="text-2xl font-bold mb-4">{groupName}</h1>
+      {/* Add Expense Button */}
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">{groupName}</h1>
+        <button
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          onClick={() => setShowAddExpense(true)}
+        >
+          Add Expense
+        </button>
+      </div>
+
+      {/* Add Expense Modal */}
+      <AddExpenseModal
+        show={showAddExpense}
+        onClose={() => setShowAddExpense(false)}
+        currentUser={currentUser}
+        members={members}
+      />
+
       {/* Owe/Owed Section */}
       {userBalance !== null && (
         <div className="mb-6 p-4 rounded bg-gray-100 flex items-center justify-between">
@@ -120,44 +182,44 @@ export default function GroupDetailsPage() {
       )}
 
       {/* Payment Graph Section */}
-      {graph && (
-        <div className="mb-6 p-4 rounded bg-blue-50">
-          <h3 className="text-md font-semibold mb-2 text-blue-800">
-            Your Payment Graph
-          </h3>
-          <div className="text-gray-800">
-            {graph.balances && graph.balances.length > 0 ? (
+
+      <div className="mb-6 p-4 rounded bg-blue-50">
+        <h3 className="text-md font-semibold mb-2 text-blue-800">
+          Your Payment Graph
+        </h3>
+        <div className="text-gray-800">
+          {getGraph ? (
+            <div>
+              {getGraph.balances.map((balance, idx) => (
+                <p key={idx} className="mb-2">
+                  {balance.userId} owes you ₹{balance.amount.toFixed(2)}{" "}
+                  {balance.currency || "INR"}.
+                </p>
+              ))}
+              
+            </div>
+          ) : (
+            <p className="mb-2">You have no pending payments.</p>
+          )}
+
+          {oweGraph && oweGraph.length > 0 && (
+            <div className="mt-4">
+              <h4 className="text-md font-semibold mb-2 text-blue-800">
+                Owe Graph
+              </h4>
               <ul className="list-disc pl-5">
-                {graph.balances.map((balance, idx) => (
+                {oweGraph.map((balance, idx) => (
                   <li key={idx}>
-                    {balance.amount > 0 ? (
-                      <>
-                        You need to pay{" "}
-                        <span className="font-semibold">
-                          ₹{balance.amount.toFixed(2)}
-                        </span>{" "}
-                        to{" "}
-                        <span className="font-semibold">{balance.userId}</span>
-                      </>
-                    ) : balance.amount < 0 ? (
-                      <>
-                        You will receive{" "}
-                        <span className="font-semibold">
-                          ₹{Math.abs(balance.amount).toFixed(2)}
-                        </span>{" "}
-                        from{" "}
-                        <span className="font-semibold">{balance.userId}</span>
-                      </>
-                    ) : null}
+                    {balance.userId} owes ₹{balance.amount.amount.toFixed(2)}{" "}
+                    {balance.amount.currency || "INR"}.
                   </li>
                 ))}
               </ul>
-            ) : (
-              <span>No payments required.</span>
-            )}
-          </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
+
       <h2 className="text-lg font-semibold mb-2">Expenses</h2>
       {expenses && expenses.length > 0 ? (
         <ul className="mb-6">

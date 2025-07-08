@@ -1,7 +1,8 @@
 import prisma from "lib/prisma";
+import { UserDetails } from "users/users.model";
 
 export class GroupRepository {
-  public async getGroupMembers(groupId: number): Promise<number[]> {
+  public async getGroupMemberIds(groupId: number): Promise<number[]> {
     const result = await prisma.groupMember.findMany({
       where: { groupId },
       select: {
@@ -10,6 +11,37 @@ export class GroupRepository {
     });
 
     return result.map((member: { userId: number }) => member.userId);
+  }
+
+  public async getGroupMembers(groupId: number): Promise<UserDetails[]> {
+    return prisma.groupMember
+      .findMany({
+        where: { groupId },
+        select: {
+          user: {
+            select: {
+              id: true,
+              userName: true,
+              email: true,
+              firstName: true,
+              lastName: true,
+              bio: true,
+              imageUrl: true,
+            },
+          },
+        },
+      })
+      .then((members) =>
+        members.map((member) => ({
+          id: member.user.id,
+          userName: member.user.userName,
+          email: member.user.email,
+          firstName: member.user.firstName,
+          lastName: member.user.lastName,
+          bio: member.user.bio,
+          imageUrl: member.user.imageUrl,
+        }))
+      );
   }
 
   public async createGroup(

@@ -37,12 +37,14 @@ export const addExpenseSchema = z.object({
   }),
   body: z.object({
     description: z.string().min(1, "Description is required"),
-    userBalances: z.record(
-      z.string().min(1, "userid is required"),
-      z.number().min(0, "Amount must be a positive number")
+    userBalances: z.array(
+      z.object({
+        userId: z.number().min(1, "User ID is required"),
+        amount: z.number(),
+      })
     ),
     currency: z.string().min(1, "Currency is required"),
     amount: z.number().min(0, "Amount must be a positive number"),
-    paidBy: z.string().min(1, "paidBy is required"),
+    paidById: z.number().min(1, "paidById is required"),
   }),
 });

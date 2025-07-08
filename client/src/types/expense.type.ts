@@ -1,7 +1,6 @@
 type UserBalance = {
   userId: string;
   amount: number;
-  currency: string;
 };
 
 export type Expense = {

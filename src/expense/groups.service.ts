@@ -1,3 +1,4 @@
+import { UserDetails } from "users/users.model";
 import { ExpenseService } from "./expense.service";
 import { GroupRepository } from "./group.repository";
 import { Amount } from "./models/Amount";
@@ -42,7 +43,7 @@ export class GroupService {
     groupId: number,
     userId: number
   ): Promise<BalanceMap> {
-    const group = await this.groupRepository.getGroupMembers(groupId);
+    const group = await this.groupRepository.getGroupMemberIds(groupId);
 
     // Check if the group exists and if the user is part of the group
     if (group.length == 0 || !group.includes(userId)) {
@@ -69,7 +70,7 @@ export class GroupService {
     userIds: number[],
     currentUserId: number
   ) {
-    const groupMembers = await this.groupRepository.getGroupMembers(groupId);
+    const groupMembers = await this.groupRepository.getGroupMemberIds(groupId);
 
     // Check if the current user is part of the group
     if (!groupMembers.includes(currentUserId)) {
@@ -84,5 +85,9 @@ export class GroupService {
       throw new Error("No new users to add");
     }
     await this.groupRepository.addUsersToGroup(groupId, filteredUserIds);
+  }
+
+  public async getGroupMembers(groupId: number): Promise<UserDetails[]> {
+    return this.groupRepository.getGroupMembers(groupId);
   }
 }

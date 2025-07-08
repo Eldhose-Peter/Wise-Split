@@ -4,8 +4,8 @@ type User = {
   id: string;
   firstName: string;
   lastName: string;
-  bio: string;
-  imageUrl: string;
+  bio: string | null;
+  imageUrl: string | null;
 };
 
 export type { User };

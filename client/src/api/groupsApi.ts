@@ -1,6 +1,7 @@
 import { Balance, Expense, PaymentGraph } from "@/types/expense.type";
 import { fetchClient } from "./fetchClient";
 import { Group } from "@/types/group.type";
+import { User } from "@/types/user.type";
 
 const API_BASE = "http://localhost:3001/api/v1/groups";
 
@@ -28,6 +29,19 @@ export class GroupApi {
     });
   }
 
+  static async createExpense(
+    groupId: string,
+    expense: Omit<Expense, "id" | "createdAt">
+  ) {
+    console.log(JSON.stringify(expense));
+    return fetchClient<Expense>(`${API_BASE}/${groupId}/expense`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(expense),
+    });
+  }
+
   static async getBalances(groupId: string, userId: number) {
     return fetchClient<Balance[]>(
       `${API_BASE}/${groupId}/user/${userId}/balances`,
@@ -46,5 +60,12 @@ export class GroupApi {
         credentials: "include",
       }
     );
+  }
+
+  static async getGroupMembers(groupId: string) {
+    return fetchClient<User[]>(`${API_BASE}/${groupId}/members`, {
+      method: "GET",
+      credentials: "include",
+    });
   }
 }

@@ -122,19 +122,21 @@ export class ExpenseService {
   addExpense(
     groupId: number,
     description: string,
-    userBalances: Record<string, number>,
+    userBalances: { userId: number; amount: number }[],
     amount: number,
     currency: string,
     paidBy: number
   ) {
     const balanceMap = new BalanceMap(
       new Map(
-        Object.entries(userBalances).map(([userId, userAmount]) => [
-          userId,
-          new Amount(currency, userAmount),
+        userBalances.map((userBalance) => [
+          userBalance.userId.toString(),
+          new Amount(currency, userBalance.amount),
         ])
       )
     );
+
+    console.log(balanceMap.getBalances());
 
     // Validate all users are part of the group
     this.validateGroupMembers(
@@ -147,12 +149,14 @@ export class ExpenseService {
       )
     );
 
+    console.log(userBalances);
+
     // Validate that the total balance is zero
     const totalBalance = Array.from(balanceMap.getBalances().values()).reduce(
       (sum, amount) => sum + amount.getAmount(),
       0
     );
-    if (totalBalance !== 0) {
+    if (totalBalance - amount !== 0) {
       throw new Error(
         `Total balance must be zero, but got ${totalBalance} for expense - ${description}.`
       );

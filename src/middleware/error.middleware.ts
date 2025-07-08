@@ -7,11 +7,12 @@ function errorMiddleware(
   response: Response,
   _next: NextFunction
 ) {
+  console.log("Error Middleware:", error);
   const status = error.status || 500;
   const message = error.message || "Something went wrong";
   response.status(status).json({
     status,
-    message
+    message,
   });
 }
 
