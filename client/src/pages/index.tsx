@@ -1,5 +1,6 @@
 import { AuthApi } from "@/api/authApi";
 import { User } from "@/types/user.type";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -56,9 +57,9 @@ export default function Page() {
       </h1>
       <p className="text-lg mb-6 text-gray-700">
         You are logged in.{" "}
-        <a href="/groups" className="text-blue-500 underline">
+        <Link href="/groups" className="text-blue-500 underline">
           View your groups
-        </a>
+        </Link>
         .
       </p>
     </div>
