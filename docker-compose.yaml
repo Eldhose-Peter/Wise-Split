@@ -2,6 +2,7 @@ services:
   postgres:
     container_name: postgres-db
     image: postgres:latest
+    restart: always
     hostname: localhost
     ports:
       - "5432:5432"
@@ -11,3 +12,50 @@ services:
       POSTGRES_DB: devdb
     volumes:
       - ./pg-data:/var/lib/postgresql/data
+    networks:
+      - wise-split-network
+
+  redis:
+    container_name: redis-cache
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - wise-split-network
+
+  backend:
+    container_name: backend-service
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres-db:5432/devdb
+      REDIS_URL: redis://redis-cache:6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - wise-split-network
+
+  client:
+    container_name: client-service
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:80"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3001/api
+    depends_on:
+      - backend
+    networks:
+      - wise-split-network
+
+  networks:
+    wise-split-network:
+      driver: bridge
