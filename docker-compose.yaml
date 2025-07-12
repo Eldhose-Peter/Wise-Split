@@ -14,6 +14,11 @@ services:
       - ./pg-data:/var/lib/postgresql/data
     networks:
       - wise-split-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
 
   redis:
     container_name: redis-cache
@@ -39,8 +44,10 @@ services:
       PORT: 3001
       FRONTEND_URL: http://localhost:3000
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
     networks:
       - wise-split-network
 
