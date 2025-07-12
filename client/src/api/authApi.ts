@@ -1,7 +1,7 @@
 import { User } from "@/types/user.type";
 import { fetchClient } from "./fetchClient";
 
-const API_BASE = "http://localhost:3001/api/v1/auth";
+const API_BASE = "/api/v1/auth";
 
 export class AuthApi {
   static async login(email: string, password: string) {

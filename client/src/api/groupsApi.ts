@@ -3,7 +3,7 @@ import { fetchClient } from "./fetchClient";
 import { Group } from "@/types/group.type";
 import { User } from "@/types/user.type";
 
-const API_BASE = "http://localhost:3001/api/v1/groups";
+const API_BASE = "/api/v1/groups";
 
 export class GroupApi {
   static async getAllGroups() {

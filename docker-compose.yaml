@@ -73,12 +73,25 @@ services:
     restart: always
     ports:
       - "3000:80"
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:3001/api
     depends_on:
       - backend
     networks:
       - wise-split-network
+
+    nginx:
+      container_name: nginx-proxy
+      image: nginx:alpine
+      restart: always
+      ports:
+        - "80:80"
+      volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf
+      depends_on:
+        - client
+        - backend
+      networks:
+        - wise-split-network
+
 
 networks:
   wise-split-network:
