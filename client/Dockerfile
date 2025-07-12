@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-RUN npm run build && npm run export
+RUN npm run build
 
 # Serve static files with NGINX
 FROM nginx:alpine AS runner

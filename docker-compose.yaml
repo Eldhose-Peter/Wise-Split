@@ -59,6 +59,6 @@ services:
     networks:
       - wise-split-network
 
-  networks:
-    wise-split-network:
-      driver: bridge
+networks:
+  wise-split-network:
+    driver: bridge
