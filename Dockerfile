@@ -1,8 +1,5 @@
 # Use official Node.js LTS image for build
-FROM node:18-alpine AS builder
-
-RUN apt-get update -y \
-&& apt-get install -y openssl
+FROM node:lts-alpine3.17 AS builder
 
 WORKDIR /app
 
@@ -15,7 +12,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # Use a smaller image for production
-FROM node:18-alpine AS production
+FROM node:lts-alpine3.17 AS production
 
 WORKDIR /app
 
