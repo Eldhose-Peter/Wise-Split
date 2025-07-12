@@ -20,6 +20,22 @@ services:
       timeout: 2s
       retries: 20
 
+  prisma-studio:
+    image: node:lts-alpine3.17
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    command: npx prisma studio --port 5555 --browser none
+    ports:
+      - "5555:5555"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres-db:5433/devdb
+    networks:
+      - wise-split-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   # redis:
   #   container_name: redis-cache
   #   image: redis:latest

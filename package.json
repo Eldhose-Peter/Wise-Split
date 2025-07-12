@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prisma:deploy": "npx prisma migrate deploy && npx prisma generate",
     "prisma:generate": "npx prisma migrate dev --name init",
     "prisma:seed": "npx prisma db seed",
     "prisma:reset": "npx prisma migrate reset",

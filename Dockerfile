@@ -8,7 +8,7 @@ RUN npm ci
 
 COPY . .
 
-RUN npx prisma generate
+RUN npm run prisma:deploy
 RUN npm run build
 
 # Use a smaller image for production
