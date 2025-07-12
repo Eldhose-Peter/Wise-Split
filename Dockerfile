@@ -5,10 +5,10 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm ci 
-RUN npm run prisma:generate
 
 COPY . .
 
+RUN npm run prisma:generate
 RUN npm run build
 
 # Use a smaller image for production
