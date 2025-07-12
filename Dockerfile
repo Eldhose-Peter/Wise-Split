@@ -8,6 +8,8 @@ RUN npm ci
 
 COPY . .
 
+ENV DATABASE_URL=postgres://postgres:postgres@postgres-db:5433/devdb
+
 RUN npm run prisma:generate
 RUN npm run build
 
