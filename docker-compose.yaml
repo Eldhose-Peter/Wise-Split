@@ -20,14 +20,14 @@ services:
       timeout: 2s
       retries: 20
 
-  redis:
-    container_name: redis-cache
-    image: redis:latest
-    restart: always
-    ports:
-      - "6380:6379"
-    networks:
-      - wise-split-network
+  # redis:
+  #   container_name: redis-cache
+  #   image: redis:latest
+  #   restart: always
+  #   ports:
+  #     - "6380:6379"
+  #   networks:
+  #     - wise-split-network
 
   backend:
     container_name: backend-service
@@ -46,8 +46,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      redis:
-        condition: service_started
     networks:
       - wise-split-network
 
