@@ -1,5 +1,8 @@
 # Use official Node.js LTS image for build
-FROM node:18 AS builder
+FROM node:18-alpine AS builder
+
+RUN apt-get update -y \
+&& apt-get install -y openssl
 
 WORKDIR /app
 
