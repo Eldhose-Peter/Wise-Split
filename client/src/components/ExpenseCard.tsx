@@ -26,13 +26,13 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
       if (userBalance.amount > 0) {
         cardContent = (
           <div className="text-red-600">
-            You owe -{userBalance.amount} {userBalance.currency}
+            You owe -{userBalance.amount} {expense.currency}
           </div>
         );
       } else if (userBalance.amount < 0) {
         cardContent = (
           <div className="text-green-600">
-            You are owed +{Math.abs(userBalance.amount)} {userBalance.currency}
+            You are owed +{Math.abs(userBalance.amount)} {expense.currency}
           </div>
         );
       } else {
